@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-color: #212121;
+        color: white;
+
+    }
+    .form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: larger;
+        
+    }
+    #guessField{
+        margin: 20px;
+        border-radius: 10px;
+        height:5vh;
+    }
+    .guessSubmit{
+        height: 10vh;
+        background-color: #212121;
+        color: white;
+        border-radius: 2px;
+    }
+    .result{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+<body>
+    <form class="form">
+        <label for="guessField" id="guess">Guess a Number</label>
+        <input type="text" id="guessField"class="guessField">
+        <input type="submit" id="subt" value="Submit value" class="guessSubmit">
+
+    </form>
+    <div class="result">
+        <p>Previous Guesses:<span class="guesses"></span></p>
+        <p>Guess Remaning<span class="lastresult"></span></p>
+        <p class="low"></p>
+    </div>
+    <script>
+        const randomnum=parseInt(Math.random()*100+1)
+        const sub=document.querySelector('#subt')
+        const userin=document.querySelector('#guessField')
+        const prev=document.querySelector('.guesses')
+        const rem=document.querySelector('.lastresult')
+        const low=document.querySelector('.low')
+         
+        const p=document.createElement('p')
+
+        let prevGuess=[]
+        let numGuess=1
+        let playGame=true
+        if(playGame){
+           sub.addEventListener('click',function(e){
+              e.preventDefault()
+              const guess=parseInt(userin.value)
+              
+              validateGuess(guess)
+           })
+        }
+
+        function validateGuess(guess){
+           if(isNaN(guess)){
+            alert('please enter valid number')
+           }
+           else if(guess<1){
+            alert("please enter valid number")
+           }
+           else if(guess>100){
+            alert("please enter valid number")
+           }
+           else{
+            prevGuess.push(guess)
+            if(numGuess===11){
+                displayguess(guess)
+                displaymessage(`Game Over. Random number was ${randomnum}`)
+                
+            }
+            else{
+                displayguess(guess)
+                checkGuess(guess)
+            }
+           }
+        }
+        function displayguess(guess){
+            userin.value = ''
+            prev.innerHTML+=`${guess},`
+            numGuess++;
+            rem.innerHTML=`${11-numGuess}`
+            
+        }
+        function checkGuess(guess){
+            if(guess===randomnum){
+                displaymessage('You guessed it right congratulations')
+                
+            }
+            else if(guess<randomnum){
+                displaymessage('number is too low')
+            }
+            else if(guess>randomnum){
+                displaymessage('number is too high')
+            }
+
+
+        }
+       
+        function displaymessage(message){
+             low.innerHTML=`<h2>${message}</h2>`
+        }
+    </script>
+</body>
+</html>
